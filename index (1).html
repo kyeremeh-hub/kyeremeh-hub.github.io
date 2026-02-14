@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrew A. Kyeremeh — Product Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0f14;
+      --surface:   #13181f;
+      --border:    #1e2530;
+      --amber:     #c8963e;
+      --amber-lt:  #e8b86d;
+      --steel:     #5a8ab8;
+      --cream:     #f0ead8;
+      --muted:     #6b7a8d;
+      --text:      #dde3ec;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.4;
+    }
+
+    .grid-bg {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px;
+      background: linear-gradient(to bottom, rgba(12,15,20,0.96) 0%, transparent 100%);
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--amber);
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cream); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 60px 80px;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s ease forwards;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(58px, 8.5vw, 120px);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s ease forwards;
+    }
+    .hero h1 em { font-style: italic; color: var(--amber); }
+    .hero-sub {
+      margin-top: 40px;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s ease forwards;
+    }
+    .hero-cta {
+      margin-top: 48px;
+      display: flex; gap: 20px; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s ease forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--amber); border-color: var(--amber); color: #0c0f14; }
+    .btn-primary:hover { background: var(--amber-lt); border-color: var(--amber-lt); }
+    .btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+
+    .hero-scroll {
+      position: absolute; bottom: 40px; right: 60px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s 1.5s ease forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--amber), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative; z-index: 1;
+      padding: 120px 60px;
+    }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      display: block;
+      height: 1px; width: 60px;
+      background: var(--amber);
+      opacity: 0.4;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--cream);
+      margin-bottom: 60px;
+    }
+
+    /* METRICS */
+    .metrics {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .metric {
+      padding: 48px 36px;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .metric:last-child { border-right: none; }
+    .metric:hover { background: rgba(200,150,62,0.04); }
+    .metric-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 50px;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .metric-unit {
+      font-family: 'DM Mono', monospace;
+      font-size: 18px;
+      color: var(--amber-lt);
+    }
+    .metric-label {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 180px;
+    }
+
+    /* EXPERIENCE */
+    .experience { background: var(--bg); }
+    .exp-grid { display: grid; gap: 2px; }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--amber);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s;
+    }
+    .exp-card:hover { border-color: rgba(200,150,62,0.3); background: rgba(200,150,62,0.025); }
+    .exp-card:hover::before { transform: scaleY(1); }
+
+    .exp-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .exp-company {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .exp-location { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .exp-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .exp-role {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .exp-bullets { list-style: none; margin-bottom: 24px; }
+    .exp-bullets li {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 8px 0 8px 22px;
+      border-bottom: 1px solid rgba(30,37,48,0.5);
+      position: relative;
+      transition: color 0.2s;
+    }
+    .exp-bullets li:last-child { border-bottom: none; }
+    .exp-bullets li::before {
+      content: '→';
+      position: absolute; left: 0;
+      color: var(--amber);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+    }
+    .exp-bullets li:hover { color: var(--text); }
+    .exp-bullets li strong { color: var(--cream); font-weight: 500; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .tag:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* PROJECTS */
+    .projects { background: var(--surface); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .project-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .project-card:hover { border-color: rgba(200,150,62,0.4); }
+    .project-card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .project-index {
+      font-family: 'Playfair Display', serif;
+      font-size: 80px;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      position: absolute;
+      top: 24px; right: 32px;
+      transition: color 0.25s;
+      pointer-events: none;
+    }
+    .project-card:hover .project-index { color: rgba(200,150,62,0.12); }
+    .project-category {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--steel);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .project-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .project-impact { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 24px; }
+    .impact-item { display: flex; flex-direction: column; }
+    .impact-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--amber);
+      line-height: 1;
+    }
+    .impact-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* SKILLS */
+    .skills { background: var(--bg); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 40px;
+    }
+    .skill-group-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-list { list-style: none; }
+    .skill-list li {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(30,37,48,0.5);
+      display: flex; align-items: center; gap: 12px;
+      transition: color 0.2s;
+    }
+    .skill-list li:last-child { border-bottom: none; }
+    .skill-list li:hover { color: var(--cream); }
+    .skill-list li::before {
+      content: '→';
+      color: var(--amber);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* EDUCATION */
+    .education { background: var(--surface); border-top: 1px solid var(--border); }
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 56px 48px;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .edu-card:hover { border-color: rgba(200,150,62,0.35); }
+    .edu-badge {
+      position: absolute;
+      top: 28px; right: 28px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      border: 1px solid rgba(200,150,62,0.3);
+      padding: 4px 12px;
+      text-transform: uppercase;
+    }
+    .edu-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .edu-school {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .edu-degree { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ABOUT */
+    .about { background: var(--bg); border-top: 1px solid var(--border); }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--cream); font-weight: 500; }
+    .about-details { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .detail-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px;
+    }
+    .detail-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .detail-value { font-size: 15px; color: var(--cream); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .footer-links { display: flex; gap: 32px; }
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--amber); }
+    .footer-copy {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .divider {
+      position: relative; z-index: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--amber), transparent);
+      opacity: 0.3;
+      margin: 0 60px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: 0.3; }
+      50%     { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .hero, section, footer { padding-left: 24px; padding-right: 24px; }
+      .divider { margin: 0 24px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+      .metric { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; }
+      .metric:nth-child(odd) { border-right: 1px solid var(--border); }
+      .exp-card { grid-template-columns: 1fr; gap: 16px; padding: 28px; }
+      .projects-grid, .edu-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+      footer { flex-direction: column; gap: 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Andrew A. Kyeremeh</span>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Senior Product Manager · Consumer Acquisitions &amp; Fintech</p>
+  <h1>Growing<br/><em>customers</em><br/>responsibly.</h1>
+  <p class="hero-sub">
+    A decade spanning financial services consulting, wealth intelligence, and identity 
+    decisioning — building products at the frontier of consumer acquisition and fintech infrastructure.
+  </p>
+  <div class="hero-cta">
+    <a href="mailto:kyeremeh@alumni.unc.edu" class="btn btn-primary">Get in touch</a>
+    <a href="https://www.linkedin.com/in/andrewkyeremeh/" class="btn btn-ghost" target="_blank">LinkedIn ↗</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- METRICS -->
+<div class="metrics" style="position:relative;z-index:1;">
+  <div class="metric reveal">
+    <div class="metric-number">~2<span class="metric-unit">M</span></div>
+    <div class="metric-label">Underserved international applicants unlocked via ITIN experience</div>
+  </div>
+  <div class="metric reveal">
+    <div class="metric-number">600<span class="metric-unit">bps</span></div>
+    <div class="metric-label">Fraud reduction through AirKey ecommerce expansion</div>
+  </div>
+  <div class="metric reveal">
+    <div class="metric-number">$10<span class="metric-unit">M+</span></div>
+    <div class="metric-label">Projected annual revenue from Atlassian bundling strategy</div>
+  </div>
+  <div class="metric reveal">
+    <div class="metric-number">8<span class="metric-unit">K+</span></div>
+    <div class="metric-label">Enterprise users scaled through EY's Organizational Talent Hub</div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <p class="section-label">Career</p>
+  <h2 class="section-title">Where I've<br/>worked.</h2>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div>
+        <p class="exp-period">2026 — Present</p>
+        <p class="exp-company">Alloy</p>
+        <p class="exp-location">New York, NY</p>
+        <span class="exp-type">Identity Decisioning</span>
+      </div>
+      <div>
+        <p class="exp-role">Senior Product Manager,<br/>Decisioning Platform</p>
+        <ul class="exp-bullets">
+          <li>Own <strong>data orchestration, policy management tools, portfolio evaluations, and 1st-party data services</strong> for Alloy's decisioning platform</li>
+          <li>Providing <strong>500+ financial institutions</strong> with access to 200+ data vendors across onboarding, transaction monitoring, pKYB, and authentication use cases</li>
+          <li>Reducing third-party account takeover risk for enterprise clients through platform-level decisioning improvements</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">KYC / AML</span>
+          <span class="tag">Decisioning</span>
+          <span class="tag">Data Orchestration</span>
+          <span class="tag">pKYB</span>
+          <span class="tag">500+ FIs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div>
+        <p class="exp-period">2023 — 2026</p>
+        <p class="exp-company">Capital One</p>
+        <p class="exp-location">New York, NY</p>
+        <span class="exp-type">Consumer Acquisitions</span>
+      </div>
+      <div>
+        <p class="exp-role">Manager, Product Management —<br/>Online Account Opening</p>
+        <ul class="exp-bullets">
+          <li>Drove product strategy for the <strong>consumer acquisition data ecosystem</strong>, crafting 12–18 month strategic roadmap and aligning stakeholders to topline OKRs</li>
+          <li>Launched <strong>IRS-compliant ITIN application experience</strong>, expanding eligibility to ~2M underserved international applicants unable to apply with an SSN</li>
+          <li>Expanded <strong>AirKey to ecommerce checkout</strong>, increasing customer spend 7% and reducing fraud 600 bps</li>
+          <li>Contributed to <strong>core banking modernization</strong>, migrating off legacy infrastructure to a nimble financial ledger that cut new product launch cycles from 6 months to 4 weeks</li>
+          <li>Increased <strong>sprint throughput 20%</strong> over three quarters by redesigning the agile operating model and shifting devs into execution ownership through structured refinement and detailed PRDs</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Account Opening</span>
+          <span class="tag">ITIN</span>
+          <span class="tag">AirKey</span>
+          <span class="tag">Core Banking</span>
+          <span class="tag">Agile</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div>
+        <p class="exp-period">Summer 2022</p>
+        <p class="exp-company">Atlassian</p>
+        <p class="exp-location">New York, NY</p>
+        <span class="exp-type">MBA Internship</span>
+      </div>
+      <div>
+        <p class="exp-role">MBA Intern,<br/>Product Strategy &amp; Analytics</p>
+        <ul class="exp-bullets">
+          <li>Built a model to analyze <strong>attach rate</strong> and recommended a product bundling pricing strategy projected to generate <strong>$10M+ in annual revenue</strong></li>
+          <li>Strategy designed to improve customer retention and ecosystem stickiness across Atlassian's cloud product suite</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Pricing Strategy</span>
+          <span class="tag">Product Bundling</span>
+          <span class="tag">Analytics</span>
+          <span class="tag">Retention</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div>
+        <p class="exp-period">2020 — 2021</p>
+        <p class="exp-company">Windfall</p>
+        <p class="exp-location">San Francisco, CA</p>
+        <span class="exp-type">Wealth Intelligence</span>
+      </div>
+      <div>
+        <p class="exp-role">Product Owner,<br/>Customer Success Operations</p>
+        <ul class="exp-bullets">
+          <li>Built <strong>predictive analytics model</strong> to identify at-risk customers, improving <strong>LTV:CAC from 1.2:1 to 2.9:1</strong> through targeted intervention strategies</li>
+          <li>Optimized customer onboarding funnel and cross-functional handoff processes, achieving a <strong>15% activation rate increase</strong> and <strong>88% customer satisfaction</strong></li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Predictive Analytics</span>
+          <span class="tag">LTV:CAC</span>
+          <span class="tag">Onboarding</span>
+          <span class="tag">Customer Success</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div>
+        <p class="exp-period">2017 — 2020</p>
+        <p class="exp-company">Ernst &amp; Young</p>
+        <p class="exp-location">San Francisco, CA</p>
+        <span class="exp-type">Digital Innovation</span>
+      </div>
+      <div>
+        <p class="exp-role">Digital Innovation,<br/>Staff → Senior Consultant</p>
+        <ul class="exp-bullets">
+          <li>Owned user onboarding and engagement strategy for EY's <strong>Organizational Talent Hub</strong> — a proprietary M&amp;A software platform — scaling to <strong>8K+ enterprise users</strong> with a <strong>+15 NPS improvement</strong></li>
+          <li>Managed Zenefits migration as product owner for a B2B enterprise SaaS client, coordinating vendor teams and user training to <strong>reduce support tickets 25%</strong> through improved adoption processes</li>
+        </ul>
+        <div class="tags">
+          <span class="tag">Organizational Talent Hub</span>
+          <span class="tag">M&amp;A Software</span>
+          <span class="tag">Enterprise SaaS</span>
+          <span class="tag">NPS</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURED PROJECTS -->
+<section class="projects" id="projects">
+  <p class="section-label">Featured Work</p>
+  <h2 class="section-title">Highlight<br/>reel.</h2>
+  <div class="projects-grid">
+
+    <div class="project-card featured reveal">
+      <div>
+        <p class="project-category">Capital One · Account Opening</p>
+        <h3 class="project-title">ITIN Application Experience</h3>
+        <p class="project-desc">
+          Led end-to-end launch of a new application experience enabling international applicants 
+          to open accounts using an Individual Taxpayer Identification Number instead of a Social 
+          Security Number — a population previously locked out of the product entirely. Navigated 
+          IRS compliance requirements, full cross-functional alignment across legal, compliance, 
+          and engineering, and product lifecycle from scoping through launch.
+        </p>
+        <div class="tags">
+          <span class="tag">Compliance</span>
+          <span class="tag">IRS / ITIN</span>
+          <span class="tag">Financial Inclusion</span>
+          <span class="tag">Account Opening</span>
+        </div>
+      </div>
+      <div>
+        <div class="project-impact">
+          <div class="impact-item">
+            <span class="impact-value">~2M</span>
+            <span class="impact-label">New eligible applicants</span>
+          </div>
+          <div class="impact-item">
+            <span class="impact-value">IRS</span>
+            <span class="impact-label">Compliant experience built from zero</span>
+          </div>
+        </div>
+        <div class="project-index">01</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-index">02</div>
+      <p class="project-category">Capital One · Authentication</p>
+      <h3 class="project-title">AirKey Ecommerce Expansion</h3>
+      <p class="project-desc">
+        Extended Capital One's NFC-based authentication product into the ecommerce checkout 
+        flow, enabling tap-to-authenticate at point of purchase. Delivered a rare product win 
+        on both growth and risk dimensions simultaneously.
+      </p>
+      <div class="project-impact">
+        <div class="impact-item">
+          <span class="impact-value">+7%</span>
+          <span class="impact-label">Customer spend</span>
+        </div>
+        <div class="impact-item">
+          <span class="impact-value">−600</span>
+          <span class="impact-label">Basis points fraud</span>
+        </div>
+      </div>
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag">NFC</span><span class="tag">Ecommerce</span><span class="tag">Fraud</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-index">03</div>
+      <p class="project-category">Atlassian · MBA Internship</p>
+      <h3 class="project-title">Cloud Product Bundling Strategy</h3>
+      <p class="project-desc">
+        Built an attach rate model analyzing cross-sell patterns across Atlassian's cloud 
+        portfolio. Recommended a bundling pricing strategy projected to create $10M+ in 
+        incremental annual revenue while improving customer retention and ecosystem lock-in.
+      </p>
+      <div class="project-impact">
+        <div class="impact-item">
+          <span class="impact-value">$10M+</span>
+          <span class="impact-label">Projected annual revenue</span>
+        </div>
+      </div>
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag">Pricing</span><span class="tag">Bundling</span><span class="tag">Analytics</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-index">04</div>
+      <p class="project-category">Ernst &amp; Young · Digital Innovation</p>
+      <h3 class="project-title">Organizational Talent Hub</h3>
+      <p class="project-desc">
+        Owned onboarding and engagement strategy for EY's proprietary M&amp;A platform. 
+        Designed workflows that scaled to 8,000+ enterprise users with a 15-point NPS 
+        improvement driven by engagement optimization and friction reduction across the 
+        onboarding experience.
+      </p>
+      <div class="project-impact">
+        <div class="impact-item">
+          <span class="impact-value">8K+</span>
+          <span class="impact-label">Enterprise users</span>
+        </div>
+        <div class="impact-item">
+          <span class="impact-value">+15</span>
+          <span class="impact-label">NPS improvement</span>
+        </div>
+      </div>
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag">M&amp;A</span><span class="tag">Onboarding</span><span class="tag">NPS</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <p class="section-label">Capabilities</p>
+  <h2 class="section-title">Domain<br/>expertise.</h2>
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <p class="skill-group-title">Product Management</p>
+      <ul class="skill-list">
+        <li>Consumer acquisitions &amp; growth</li>
+        <li>0→1 product development</li>
+        <li>Pricing &amp; bundling strategy</li>
+        <li>API &amp; platform products</li>
+        <li>Roadmap &amp; OKR planning</li>
+        <li>Agile operating models</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <p class="skill-group-title">Fintech &amp; Compliance</p>
+      <ul class="skill-list">
+        <li>KYC / AML frameworks</li>
+        <li>Identity decisioning &amp; orchestration</li>
+        <li>Fraud prevention &amp; authentication</li>
+        <li>Core banking modernization</li>
+        <li>IRS &amp; regulatory compliance</li>
+        <li>Enterprise SaaS &amp; M&amp;A software</li>
+      </ul>
+    </div>
+    <div class="skill-group reveal">
+      <p class="skill-group-title">Technical Tools</p>
+      <ul class="skill-list">
+        <li>SQL · Snowflake · Tableau</li>
+        <li>Jira · Figma · Lucid</li>
+        <li>Splunk · New Relic · Optimizely</li>
+        <li>Salesforce (SFDC) · Persana</li>
+        <li>A/B experimentation</li>
+        <li>NFC &amp; auth protocols</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section class="education" id="education">
+  <p class="section-label">Education</p>
+  <h2 class="section-title">Where the<br/>foundation was built.</h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-badge">MBA</div>
+      <p class="edu-period">2021 — 2023</p>
+      <p class="edu-school">Tuck School of Business<br/>at Dartmouth</p>
+      <p class="edu-degree">Master of Business Administration<br/>Hanover, NH</p>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-badge">BS · Distinction</div>
+      <p class="edu-period">2012 — 2016</p>
+      <p class="edu-school">Kenan-Flagler Business School<br/>at UNC Chapel Hill</p>
+      <p class="edu-degree">Bachelor of Science, Business Administration — with Distinction<br/>Chapel Hill, NC</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-text reveal">
+      <p class="section-label">About</p>
+      <p>
+        I'm a Senior Product Manager with a decade of experience across consulting, 
+        wealth intelligence, and fintech — specializing in <strong>consumer acquisitions, 
+        identity decisioning, and financial infrastructure</strong>.
+      </p>
+      <p>
+        My path has taken me from digital innovation consulting at Ernst &amp; Young, 
+        to early-stage product at Windfall, an MBA at Tuck Dartmouth, a summer at Atlassian, 
+        three years driving account opening strategy at Capital One — and now building 
+        the decisioning infrastructure that 500+ financial institutions rely on at Alloy.
+      </p>
+      <p>
+        I'm drawn to problems at the intersection of customer access, compliance, and scale: 
+        how do you responsibly grow a customer base? How do you build infrastructure that 
+        unlocks segments previously left out of the system?
+      </p>
+    </div>
+    <div class="about-details reveal">
+      <div class="detail-item">
+        <p class="detail-label">Location</p>
+        <p class="detail-value">Brooklyn, NY</p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-label">Current Role</p>
+        <p class="detail-value">Sr. PM @ Alloy</p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-label">Specialization</p>
+        <p class="detail-value">Acquisitions</p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-label">MBA</p>
+        <p class="detail-value">Tuck · Dartmouth '23</p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-label">Undergrad</p>
+        <p class="detail-value">UNC · Kenan-Flagler '16</p>
+      </div>
+      <div class="detail-item">
+        <p class="detail-label">Domain</p>
+        <p class="detail-value">Fintech</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Andrew A. Kyeremeh</div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/andrewkyeremeh/" target="_blank">LinkedIn</a>
+    <a href="mailto:kyeremeh@alumni.unc.edu">Email</a>
+    <a href="tel:2406439067">(240) 643-9067</a>
+  </div>
+  <p class="footer-copy">© 2026</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
